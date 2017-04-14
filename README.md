@@ -3,11 +3,11 @@
 This package is a MatConvNet implementation of ["Deep Spatial Pyramid: The Devil is Once Again in the Details",Bin-Bin Gao, Xiu-Shen Wei, Jianxin Wu, Weiyao Lin](https://arxiv.org/abs/1504.05277). You can extract DSP features and train svm model for image classification on your own dataset with pre-trained CNN models. This package is created by [Bin-Bin Gao](http://lamda.nju.edu.cn/gaobb/).
 
 ### Table of Contents
-* [Software Requirements](#Software Requirements)
-* [Model & Datasets](#Download pre-trained model and datasets)
-* [Single-scale DSP](#train-from-scratch)
-* [Multi-scale DSP](#fine-tune-your-own)
-* [Additional Information](#Additional Information)
+* [Software Requirements](Software Requirements)
+* [Model & Datasets](Download pre-trained model and datasets)
+* [Single-scale DSP](train-from-scratch)
+* [Multi-scale DSP](fine-tune-your-own)
+* [Additional Information](Additional Information)
 
 ### Software Requirements
 The following software should be downloaded and built before running the experiments.
