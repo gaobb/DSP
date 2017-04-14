@@ -14,6 +14,7 @@ The following software should be downloaded and built before running the experim
 
 0. [MATLAB](https://mathworks.com/products/matlab.html).
     - version: matlab 2014b or matlab 2016b
+
 0. [vlfeat](http://www.vlfeat.org/) is used for FV or VLAD encoding. (included in this package, see `external/vlfeat`)
     - version: vlfeat-0.9.19
     - If you have problem with compiling Vlfeat, please refer to the [link](http://www.vlfeat.org/compiling.html).
@@ -23,13 +24,13 @@ The following software should be downloaded and built before running the experim
     - If you have problem with compiling MatConvNet, please refer to the [link](http://www.vlfeat.org/matconvnet/install/).
 
 0. [DenseLibLinear](https://github.com/gaobb/DenseLIBLINEAR) is used for train svm classification model.(included in this package, see `external/DenseLibLinear`)
-   To compile the library, it is usually sufficient to change to [DenseLibLinear] directory and type make:
-```
-git clone git@github.com:gaobb/DenseLibLinear.git external/
-cd external/DenseLibLinear/
-make
-cp train_dense  predict_dense  ~/DSP_v1.0
-```
+    - To compile the library, it is usually sufficient to change to [DenseLibLinear] directory and type make:
+      ```
+      git clone git@github.com:gaobb/DenseLibLinear.git external/
+      cd external/DenseLibLinear/
+      make
+      cp train_dense  predict_dense  ~/DSP_v1.0
+      ```
 
 ### Download pre-trained model and datasets
 You can download some powerful cnn models from the [link](http://www.vlfeat.org/matconvnet/pretrained/).
@@ -79,5 +80,5 @@ purposes, please contact Prof. Jianxin Wu (wujx2001@gmail.com).
 ATTN2: This packages were developed by Bin-Bin Gao (csgaobb@gmail.com).
 For any problem concerning the code, please feel free to contact Mr. Gao.
 
-version Apr. 14, 2017
+version: Apr. 14, 2017
 
