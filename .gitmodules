@@ -1,0 +1,3 @@
+[submodule "DSP/external"]
+	path = DSP/external
+	url = git@github.com:gaobb/DenseLibLinear.git
