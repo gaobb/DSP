@@ -37,21 +37,21 @@ You can download some powerful cnn models from the [link](http://www.vlfeat.org/
 
 - the models to `pre_models` : 
 
-[imagenet-vgg-verydeep-16](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-16.mat)
+  [imagenet-vgg-verydeep-16](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-16.mat)
 
-[imagenet-vgg-verydeep-19](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat)
+  [imagenet-vgg-verydeep-19](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat)
 
-[imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-50-dag.mat) 
+  [imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-50-dag.mat) 
 
-[imagenet-resnet-101-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-101-dag.mat) 
+  [imagenet-resnet-101-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-101-dag.mat) 
 
-[imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-152-dag.mat) 
+  [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-152-dag.mat) 
 
 - the datasets to `datasets/` : 
 
-[The PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/)
+  [The PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/)
 
-[MIT Places Database](http://places.csail.mit.edu/)
+  [MIT Places Database](http://places.csail.mit.edu/)
 
 ### Single-scale DSP
 ```matlab
