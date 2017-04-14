@@ -26,10 +26,9 @@ The following software should be downloaded and built before running the experim
 0. [DenseLibLinear](https://github.com/gaobb/DenseLIBLINEAR) is used for train svm classification model.(included in this package, see `external/DenseLibLinear`)
     - To compile the library, it is usually sufficient to change to [DenseLibLinear] directory and type make:
       ```
-      git clone git@github.com:gaobb/DenseLibLinear.git external/
       cd external/DenseLibLinear/
       make
-      cp train_dense  predict_dense  ~/DSP_v1.0
+      cp train_dense  predict_dense  ~/DSP
       ```
 
 ### Download pre-trained model and datasets
