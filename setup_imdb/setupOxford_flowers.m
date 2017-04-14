@@ -1,0 +1,86 @@
+function imdb = setupOxford_flowers(datasetDir, varargin)
+% SETUPSCENE67    Setup MIT Scene 67 dataset
+%    This is similar to SETUPGENERIC(), with modifications to setup
+%    MIT Scene 67 according to the standard evaluation protocols. The
+%    function supports only the LITE option.
+%
+%    See: SETUPGENERIC().
+
+% Author: Andrea Vedaldi
+
+% Copyright (C) 2013 Andrea Vedaldi
+% All rights reserved.
+%
+% This file is part of the VLFeat library and is made available under
+% the terms of the BSD license (see the COPYING file).
+
+opts.lite = false ;
+% opts.version = 'original';
+opts = vl_argparse(opts, varargin) ;
+% datasetDir = '/home/gaobb/mywork/SV3/image_data/Oxford_flowers/';
+% Construct image database imdb structure
+imdb.meta.sets = {'train', 'val', 'test'} ;
+class_label = load(fullfile(datasetDir, 'imagelabels.mat'));
+% imdb.meta.classes = class_names.class_names;
+tvt_file = load(fullfile(datasetDir, 'setid.mat'));
+
+num_train = numel(tvt_file.trnid);
+num_valid = numel(tvt_file.valid);
+num_test = numel(tvt_file.tstid);
+labels = class_label.labels;
+% switch opts.version
+%     case 'original'
+%         imdb.imageDir = fullfile(datasetDir);
+%     case 'crop'
+%         imdb.imageDir = fullfile(datasetDir);
+% end
+% train
+for i =1 :numel(tvt_file.trnid)
+    img_name = 'image_00000.jpg';
+    len_name = length(num2str(tvt_file.trnid(i)));
+    img_name(end-4-len_name+1:end-4) = num2str(tvt_file.trnid(i));
+    train_name{1,i} = img_name;
+    train_label(1,i) = labels(tvt_file.trnid(i));
+end
+
+% validation
+for i =1 :numel(tvt_file.valid)
+    img_name = 'image_00000.jpg';
+    len_name = length(num2str(tvt_file.valid(i)));
+    img_name(end-4-len_name+1:end-4) = num2str(tvt_file.valid(i));
+    valid_name{1,i} = img_name;
+    valid_label(1,i) = labels(tvt_file.valid(i));
+end
+
+% test
+for i =1 :numel(tvt_file.tstid)
+    img_name = 'image_00000.jpg';
+    len_name = length(num2str(tvt_file.tstid(i)));
+    img_name(end-4-len_name+1:end-4) = num2str(tvt_file.tstid(i));
+    test_name{1,i} = img_name;
+    test_label(1,i) = labels(tvt_file.tstid(i));
+end
+
+imdb.imageDir = fullfile(datasetDir);
+imdb.images.id = 1:num_train + num_valid + num_test;
+
+imdb.images.name = [fullfile('images',train_name),fullfile('images',valid_name),fullfile('images',test_name)];
+imdb.images.set = [ones(1,num_train),2*ones(1,num_valid),3*ones(1,num_test)];
+imdb.images.class = [train_label, valid_label, test_label];
+
+
+if opts.lite
+  ok = {} ;
+  for c = 1:5
+    ok{end+1} = vl_colsubset(find(imdb.images.class == c & imdb.images.set == 1), 5) ;
+    ok{end+1} = vl_colsubset(find(imdb.images.class == c & imdb.images.set == 2), 5) ;
+    ok{end+1} = vl_colsubset(find(imdb.images.class == c & imdb.images.set == 3), 5) ;
+  end
+  ok = cat(2, ok{:}) ;
+%   imdb.meta.classes = imdb.meta.classes(1:5) ;
+  imdb.images.id = imdb.images.id(ok) ;
+  imdb.images.name = imdb.images.name(ok) ;
+  imdb.images.set = imdb.images.set(ok) ;
+  imdb.images.class = imdb.images.class(ok) ;
+end
+

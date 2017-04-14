@@ -1,0 +1,163 @@
+% Single-scale DSP
+% Author: Bin-Bin Gao (gaobb@lamda.nju.edu.cn)
+% Created on 2015.04.28
+% Last modified on 2017.04.13
+clear
+clc
+
+%----------------------------------------------------------------------------------------------------------
+%                   Add dependency toolbox to matlab work path
+%-----------------------------------------------------------------------------------------------------------
+run('setup')
+%----------------------------------------------------------------------------------------------------------
+%                   Set pre-train model and datasets path
+%-----------------------------------------------------------------------------------------------------------
+opt.model_dir = '~/mywork/experiment/DSP-v6.0/vgg_net';
+opt.model_dir = '/home/gaobb/vgg_net';
+opt.data_dir = '/mnt/data3/gaobb/image_data/PASCAL';
+
+
+models = {'VggNet_16','VggNet_19','ResNet_50','ResNet_152'};
+datasets ={'caltech101','Stanford40','Indoor67','Scene15','CUB_200_2011','Stanford_Cars','voc07','Oxford_flowers'};%,'SUN397','caltech256'
+encodes ={ 'FV','VLAD','D3'};
+norms = {'fro','none','l2','0-1'};
+
+
+opt.model = models{1};
+opt.cnn_layer = 'pool5'; 
+opt.norm = norms{1,1};
+
+opt.dataset = datasets{1};
+  
+opt.lite = true;    
+opt.split = 1;
+opt.data_split = ['./results/split_',num2str(opt.split)];
+
+
+opt.encode = encodes{1};
+opt.numWords = 2; %FV:2 VLAD:4 % the number of GMM components or the clusters of kmeans
+opt.spatial = {'0x0','1x1'};%'2x2','3x3','4x4'};%,'2x2','3x3'};,'1x0'
+opt.gpu_id = [9]; % for p= 1 gpu1
+
+switch opt.dataset
+    case {'voc07'}
+        opt.train_test_set = 'trainval-test';
+        opt.classifier = 'vlfeat';
+    case 'Oxford_flowers'
+        opt.train_test_set = 'train-test';
+        opt.classifier = 'liblinear';
+    otherwise
+        opt.train_test_set = 'train-val';
+        opt.classifier = 'liblinear';
+end
+
+
+
+%----------------------------------------------------------------------------------------------------------
+%                   Single-scale DSP
+%-----------------------------------------------------------------------------------------------------------
+scales = {224, 384, 512};
+for s= 1:3
+    opt.imgsize = scales{s};
+    dsp_svm(opt);
+end
+%----------------------------------------------------------------------------------------------------------
+%                   Multi-scale DSP
+%-----------------------------------------------------------------------------------------------------------
+opt.datasetDir = fullfile(opt.data_dir, opt.dataset) ;
+opt.rootPath = fullfile(opt.data_split, opt.dataset) ;
+opt.expPath = fullfile(opt.rootPath,[opt.model,'-',opt.encode,'-',...
+    num2str(opt.numWords),'-SP-',num2str(numel(opt.spatial)),...
+    '-Norm-',opt.norm]);
+
+train_test_sets = strsplit(opt.train_test_set, '-');
+
+for s = 1:3
+    train_file = [train_test_sets{1},num2str(scales{s}),'.bin'];
+    fin(s) = fopen(fullfile(opt.expPath,train_file));
+    
+    num = fread(fin(s),1,'int');
+    dim = fread(fin(s),1,'int');
+end
+
+Mstrainfeat_path = fullfile(opt.expPath,'MsTrain.bin');
+if exist(Mstrainfeat_path,'file')
+    system(['rm  ' Mstrainfeat_path]);
+end
+f1 = fopen(Mstrainfeat_path,'w');
+fwrite(f1,num,'int'); % # of examples
+fwrite(f1,dim,'int'); % # of dimensions
+
+for n=1:num
+    for s =1:numel(scales)
+        label(1,s) = fread(fin(s),1,'int');
+        feat(:,s) = fread(fin(s),dim,'float');
+    end
+    ms_label = label(1,1);
+    ms_feat = mean(feat,2);
+    ms_feat =  ms_feat./max(norm(ms_feat),1e-12);
+    fwrite(f1,ms_label,'int'); % label
+    fwrite(f1,ms_feat,'float'); % data
+end
+
+svmmodel_path = fullfile(opt.expPath,'Mstrain.bin.model');
+system(['time  ./train_dense   -c 10 ',Mstrainfeat_path, '  ', svmmodel_path]);
+
+
+Mstestfeat_path = fullfile(opt.expPath,'MsTest.bin');
+
+if exist(Mstestfeat_path,'file')
+    system(['rm  ' Mstestfeat_path]);
+end
+for s = 1:3
+    test_file = [train_test_sets{2},num2str(scales{s}),'.bin'];
+    fin(s) = fopen(fullfile(opt.expPath,test_file));
+    
+    num = fread(fin(s),1,'int');
+    dim = fread(fin(s),1,'int');
+end
+
+f1 = fopen(Mstestfeat_path,'w');
+fwrite(f1,num,'int'); % # of examples
+fwrite(f1,dim,'int'); % # of dimensions
+
+for n=1:num
+    for s =1:numel(scales)
+        label(1,s) = fread(fin(s),1,'int');
+        feat(:,s) = fread(fin(s),dim,'float');
+    end
+    ms_label = label(1,1);
+    ms_feat = mean(feat,2);
+    % ms_feat = max(temp_feat');
+    
+    ms_feat =  ms_feat./max(norm(ms_feat),1e-12);
+    fwrite(f1,ms_label,'int'); % label
+    fwrite(f1,ms_feat,'float'); % data
+end
+pred_test = fullfile(opt.expPath,'MsPred.txt');
+system(['time  ./predict_dense   ',Mstestfeat_path, '  ', svmmodel_path, '  ', pred_test]);
+
+
+preds = textread(pred_test,'','delimiter',',');
+cmat = confusionmat(preds(:,end), preds(:,1));
+meanAcc = sum(diag(cmat))./sum(cmat(:));
+meanRecall = mean(diag(cmat)./sum(cmat,2));
+Result = sprintf('# meanAcc: %.2f%%, meanRecall: %.2f%%\n',100*meanAcc,100*meanRecall);
+
+figure(1) ; clf ;
+imagesc(cmat) ; axis square ;
+title(Result) ;
+vl_printsize(1) ;
+print('-dpdf', fullfile(opt.expPath, ['MS-result-confusion.pdf'])) ;
+print('-djpeg', fullfile(opt.expPath, ['Ms-result-confusion.jpg'])) ;
+
+diary = fullfile(opt.expPath,['MS',opt.dataset,'diary.txt']);
+f = fopen(diary,'a');
+fprintf(f,'\n# Muti-Scale %s ',[opt.model,'-',opt.encode,'-',num2str(opt.numWords)]);
+fprintf(f,'%s \n',Result);
+
+fclose(f);
+
+%----------------------------------------------------------------------------------------------------------
+%                   End
+%-----------------------------------------------------------------------------------------------------------
