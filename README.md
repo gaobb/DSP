@@ -3,13 +3,13 @@
 This package is a MatConvNet implementation of ["Deep Spatial Pyramid: The Devil is Once Again in the Details",Bin-Bin Gao, Xiu-Shen Wei, Jianxin Wu, Weiyao Lin](https://arxiv.org/abs/1504.05277). You can extract DSP features and train svm model for image classification on your own dataset with pre-trained CNN models. This package is created by [Bin-Bin Gao](http://lamda.nju.edu.cn/gaobb/).
 
 ### Table of Contents
-0. [Software requirements](#Software requirements)
+0. [Software Requirements](#Software Requirements)
 0. [Download pre-trained model and datasets](#Download pre-trained model and datasets)
 0. [Single-scale DSP](#train-from-scratch)
 0. [Multi-scale DSP](#fine-tune-your-own)
 0. [Additional Information](#Additional Information)
 
-### Software requirements
+### Software Requirements
 The following software should be downloaded and built before running the experiments.
 
 0. [MATLAB](https://mathworks.com/products/matlab.html).
@@ -37,9 +37,13 @@ You can download some powerful cnn models from the [link](http://www.vlfeat.org/
 
 - the models to `pre_models` : 
 [imagenet-vgg-verydeep-16](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-16.mat)
+
 [imagenet-vgg-verydeep-19](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat)
+
 [imagenet-resnet-50-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-50-dag.mat) 
+
 [imagenet-resnet-101-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-101-dag.mat) 
+
 [imagenet-resnet-152-dag](http://www.vlfeat.org/matconvnet/models/imagenet-resnet-152-dag.mat) 
 
 - the datasets to `datasets/` : 
