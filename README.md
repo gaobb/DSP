@@ -85,7 +85,7 @@ purposes, please contact Prof. Jianxin Wu (wujx2001@gmail.com).
 
 
 ATTN2: This packages were developed by Bin-Bin Gao (csgaobb@gmail.com).
-For any problem concerning the code, please feel free to contact Mr. Gao.
+For any problem concerning the code, please feel free to contact Bin-Bin Gao.
 
 > version: Apr. 14, 2017
 
