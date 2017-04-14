@@ -4,7 +4,7 @@ This package is a MatConvNet implementation of ["Deep Spatial Pyramid: The Devil
 
 ### Table of Contents
 0. [Software Requirements](###Software Requirements)
-0. [Download pre-trained model and datasets](###Download pre-trained model and datasets)
+0. [Mmodel and Datasets](###Download pre-trained model and datasets)
 0. [Single-scale DSP](###train-from-scratch)
 0. [Multi-scale DSP](#fine-tune-your-own)
 0. [Additional Information](###Additional Information)
