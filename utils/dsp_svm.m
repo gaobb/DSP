@@ -172,14 +172,18 @@ switch opt.encode
     case {'FV','VLAD','D3'}
         tic;
         % sampling
-        num_samtrain =  min(opt.num_samtrain, num_train);
-        num_avgclass =  floor(num_samtrain/ num_class);
-        sub_ind = cell(num_class);
-        for c =1:num_class
-            ind = find(train_label ==c);
-            randn('state', opt.seed) ;
-            rand('state', opt.seed) ;
-            sub_ind{c} = vl_colsubset(ind, min(num_avgclass, length(ind)));
+         num_samtrain =  min(opt.num_samtrain, num_train);
+         if isfield(imdb.images, 'class')%'class'    for sinle label
+            num_avgclass =  floor(num_samtrain/ num_class);
+            sub_ind = cell(num_class);
+            for c =1:num_class
+                ind = find(train_label ==c);
+                randn('state', opt.seed) ;
+                rand('state', opt.seed) ;
+                sub_ind{c} = vl_colsubset(ind, min(num_avgclass, length(ind)));
+            end
+         else         % for multi-label
+             sub_ind{1} = vl_colsubset(train_id, num_samtrain);
         end
         
         sam_feats = get_sam_feats(net,train_imgs(cat(2, sub_ind{:})),...
