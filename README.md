@@ -23,15 +23,16 @@ The following software should be downloaded and built before running the experim
       $ matlab -nodisplay -r "setup(true,struct('enableGpu',true,'enableCudnn',true));exit;"
       ```
 0. [Instruction]()
-[vlfeat](http://www.vlfeat.org/) is used for FV or VLAD encoding. (included in this package, see `external/vlfeat`)
+
+   [vlfeat](http://www.vlfeat.org/) is used for FV or VLAD encoding. (included in this package, see `external/vlfeat`)
     - version: vlfeat-0.9.19
     - If you have problem with compiling Vlfeat, please refer to the [link](http://www.vlfeat.org/compiling.html).
     
-[matconvnet](http://www.vlfeat.org/matconvnet/) is used for extracting deep features based on pre-trained model.(included in this package, see `external/matconvnet`)
+   [matconvnet](http://www.vlfeat.org/matconvnet/) is used for extracting deep features based on pre-trained model.(included in this package, see `external/matconvnet`)
     - version: matconvnet-1.0-beta24
     - If you have problem with compiling MatConvNet, please refer to the [link](http://www.vlfeat.org/matconvnet/install/).
 
-[DenseLibLinear](https://github.com/gaobb/DenseLIBLINEAR) is used for train svm classification model.(included in this package, see `external/DenseLibLinear`)
+   [DenseLibLinear](https://github.com/gaobb/DenseLIBLINEAR) is used for train svm classification model.(included in this package, see `external/DenseLibLinear`)
 
 
 
