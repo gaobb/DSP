@@ -173,7 +173,7 @@ switch opt.encode
         tic;
         % sampling
          num_samtrain =  min(opt.num_samtrain, num_train);
-         if isfield(imdb.images, 'class')%'class'    for sinle label
+         if isfield(imdb.images, 'class')%'class'    for single label
             num_avgclass =  floor(num_samtrain/ num_class);
             sub_ind = cell(num_class);
             for c =1:num_class
