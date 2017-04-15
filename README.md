@@ -3,17 +3,25 @@
 This package is a MatConvNet implementation of ["Deep Spatial Pyramid: The Devil is Once Again in the Details",Bin-Bin Gao, Xiu-Shen Wei, Jianxin Wu, Weiyao Lin](https://arxiv.org/abs/1504.05277). You can extract DSP features and train svm model for image classification on your own dataset with pre-trained CNN models. This package is created by [Bin-Bin Gao](http://lamda.nju.edu.cn/gaobb/).
 
 ### Table of Contents
-0. [Software Requirements](#Software-Requirements)
+0. [Requirements & Install](#Requirements & Install)
 0. [Download Models & Datasets](#Download-Models&Datasets)
 0. [Run Single-scale DSP](#Single-scale-DSP)
 0. [Run Multi-scale DSP](#Multi-scale-DSP)
 0. [Additional Information](#Additional-Information)
 
-### Software Requirements
+### Requirements & Install
 The following software should be downloaded and built before running the experiments.
 
 0. [MATLAB](https://mathworks.com/products/matlab.html).
     - version: matlab 2014b or matlab 2016b
+
+0. [Install]
+    - You can clone the package and install through the following command in linux terminal:
+      ```
+      $ git clone --recurse-submodules git@github.com:gaobb/DSP.git
+      $ cd DSP/
+      $ matlab -nodisplay -r "setup(true,struct('enableGpu',true,'enableCudnn',true));exit;"
+      ```
 
 0. [vlfeat](http://www.vlfeat.org/) is used for FV or VLAD encoding. (included in this package, see `external/vlfeat`)
     - version: vlfeat-0.9.19
@@ -24,12 +32,8 @@ The following software should be downloaded and built before running the experim
     - If you have problem with compiling MatConvNet, please refer to the [link](http://www.vlfeat.org/matconvnet/install/).
 
 0. [DenseLibLinear](https://github.com/gaobb/DenseLIBLINEAR) is used for train svm classification model.(included in this package, see `external/DenseLibLinear`)
-    - To compile the library, it is usually sufficient to change to [DenseLibLinear] directory and type make:
-      ```
-      cd external/DenseLibLinear/
-      make
-      cp train_dense  predict_dense  ~/DSP
-      ```
+
+
 
 ### Download pre-trained model and datasets
 You can download some powerful cnn models from the [link](http://www.vlfeat.org/matconvnet/pretrained/).
