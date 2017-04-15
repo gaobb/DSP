@@ -16,7 +16,7 @@ The following software should be downloaded and built before running the experim
     - version: matlab 2014b or matlab 2016b
 
 0. [Install]()
-    - You can clone the package and install through the following command in linux terminal:
+    - You can clone the package and install it through the following command in linux terminal:
       ```
       $ git clone --recurse-submodules git@github.com:gaobb/DSP.git
       $ cd DSP/
